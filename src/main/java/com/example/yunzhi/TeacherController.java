@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,4 +70,35 @@ public class TeacherController {
         logger.info(sql);
         jdbcTemplate.execute(sql);
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("{id}")
+    public Teacher getById(@PathVariable Long id) {
+        Teacher teacher = new Teacher();
+        logger.info(id.toString());
+
+        String query = String.format("select id, name, username, email, sex, create_time, update_time from teacher " +
+                "where id = %d", id);
+        RowCallbackHandler rowCallbackHandler = new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                logger.info("Processed result: " + rs.toString());
+
+                teacher.setId(rs.getLong("id"));
+                teacher.setName(rs.getString("name"));
+                teacher.setUsername(rs.getString("username"));
+                teacher.setEmail(rs.getString("email"));
+                teacher.setGender(rs.getBoolean("sex"));
+                teacher.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime().atZone(ZoneId.of("Asia" +
+                        "/Shanghai")));
+                teacher.setUpdateTime(rs.getTimestamp("update_time").toLocalDateTime().atZone(ZoneId.of("Asia" +
+                        "/Shanghai")));
+            }
+        };
+
+        jdbcTemplate.query(query, rowCallbackHandler);
+
+        return teacher;
+    }
+
 }
