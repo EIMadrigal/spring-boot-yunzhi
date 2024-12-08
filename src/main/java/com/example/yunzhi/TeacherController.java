@@ -6,7 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +28,7 @@ public class TeacherController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @CrossOrigin(origins = "*")
     @GetMapping
     public List<Teacher> getAll() {
 
@@ -54,5 +58,15 @@ public class TeacherController {
 
         jdbcTemplate.query(query, rowCallbackHandler);
         return teachers;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping
+    public void save(@RequestBody Teacher teacher) {
+        logger.info("trigger save method");
+        String sql = String.format("insert into teacher (name, username, email, sex) values ('%s', '%s', '%s', %s)",
+                teacher.getName(), teacher.getUsername(), teacher.getEmail(), teacher.getGender().compareTo(false));
+        logger.info(sql);
+        jdbcTemplate.execute(sql);
     }
 }
