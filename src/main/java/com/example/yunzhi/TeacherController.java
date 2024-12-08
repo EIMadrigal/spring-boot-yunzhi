@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -99,6 +100,16 @@ public class TeacherController {
         jdbcTemplate.query(query, rowCallbackHandler);
 
         return teacher;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("{id}")
+    public void update(@PathVariable Long id, @RequestBody Teacher teacher) {
+        System.out.println(id);
+        System.out.println(teacher.toString());
+        String sql = String.format("update teacher set name = '%s', username = '%s', email = '%s', sex = %s where id = %s",
+                teacher.getName(), teacher.getUsername(), teacher.getEmail(), teacher.getGender().compareTo(false), id);
+        jdbcTemplate.update(sql);
     }
 
 }
