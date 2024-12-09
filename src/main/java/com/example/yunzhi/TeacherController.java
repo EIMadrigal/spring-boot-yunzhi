@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -109,6 +110,13 @@ public class TeacherController {
         System.out.println(teacher.toString());
         String sql = String.format("update teacher set name = '%s', username = '%s', email = '%s', sex = %s where id = %s",
                 teacher.getName(), teacher.getUsername(), teacher.getEmail(), teacher.getGender().compareTo(false), id);
+        jdbcTemplate.update(sql);
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Long id) {
+        String sql = String.format("delete from teacher where id = %s", id);
         jdbcTemplate.update(sql);
     }
 
