@@ -31,7 +31,6 @@ public class TeacherController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @CrossOrigin(origins = "*")
     @GetMapping
     public List<Teacher> getAll() {
 
@@ -63,7 +62,6 @@ public class TeacherController {
         return teachers;
     }
 
-    @CrossOrigin(origins = "*")
     @PostMapping
     public void save(@RequestBody Teacher teacher) {
         logger.info("trigger save method");
@@ -73,7 +71,6 @@ public class TeacherController {
         jdbcTemplate.execute(sql);
     }
 
-    @CrossOrigin(origins = "*")
     @GetMapping("{id}")
     public Teacher getById(@PathVariable Long id) {
         Teacher teacher = new Teacher();
@@ -103,7 +100,6 @@ public class TeacherController {
         return teacher;
     }
 
-    @CrossOrigin(origins = "*")
     @PutMapping("{id}")
     public void update(@PathVariable Long id, @RequestBody Teacher teacher) {
         System.out.println(id);
@@ -113,7 +109,6 @@ public class TeacherController {
         jdbcTemplate.update(sql);
     }
 
-    @CrossOrigin(origins = "*")
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         String sql = String.format("delete from teacher where id = %s", id);
