@@ -1,5 +1,6 @@
 package com.example.yunzhi.repository;
 
+import com.example.yunzhi.controller.KlassController;
 import com.example.yunzhi.model.Klass;
 import org.springframework.data.repository.CrudRepository;
 

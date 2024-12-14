@@ -46,7 +46,7 @@ public class TeacherController {
                 teacher.setName(rs.getString("name"));
                 teacher.setUsername(rs.getString("username"));
                 teacher.setEmail(rs.getString("email"));
-                teacher.setGender(rs.getBoolean("sex"));
+                teacher.setGender(rs.getBoolean("gender"));
                 teacher.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime().atZone(ZoneId.of("Asia" +
                         "/Shanghai")));
                 teacher.setUpdateTime(rs.getTimestamp("update_time").toLocalDateTime().atZone(ZoneId.of("Asia" +
@@ -56,7 +56,7 @@ public class TeacherController {
             }
         };
 
-        String query = "select id, name, username, email, sex, create_time, update_time from teacher";
+        String query = "select id, name, username, email, gender, create_time, update_time from teacher";
 
         jdbcTemplate.query(query, rowCallbackHandler);
         return teachers;
@@ -65,8 +65,8 @@ public class TeacherController {
     @PostMapping
     public void save(@RequestBody Teacher teacher) {
         logger.info("trigger save method");
-        String sql = String.format("insert into teacher (name, username, email, sex) values ('%s', '%s', '%s', %s)",
-                teacher.getName(), teacher.getUsername(), teacher.getEmail(), teacher.getGender().compareTo(false));
+        String sql = String.format("insert into teacher (name, username, email, gender) values ('%s', '%s', '%s', %s)",
+                teacher.getName(), teacher.getUsername(), teacher.getEmail(), teacher.getGender());
         logger.info(sql);
         jdbcTemplate.execute(sql);
     }
@@ -76,7 +76,7 @@ public class TeacherController {
         Teacher teacher = new Teacher();
         logger.info(id.toString());
 
-        String query = String.format("select id, name, username, email, sex, create_time, update_time from teacher " +
+        String query = String.format("select id, name, username, email, gender, create_time, update_time from teacher " +
                 "where id = %d", id);
         RowCallbackHandler rowCallbackHandler = new RowCallbackHandler() {
             @Override
@@ -87,7 +87,7 @@ public class TeacherController {
                 teacher.setName(rs.getString("name"));
                 teacher.setUsername(rs.getString("username"));
                 teacher.setEmail(rs.getString("email"));
-                teacher.setGender(rs.getBoolean("sex"));
+                teacher.setGender(rs.getBoolean("gender"));
                 teacher.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime().atZone(ZoneId.of("Asia" +
                         "/Shanghai")));
                 teacher.setUpdateTime(rs.getTimestamp("update_time").toLocalDateTime().atZone(ZoneId.of("Asia" +
@@ -104,7 +104,7 @@ public class TeacherController {
     public void update(@PathVariable Long id, @RequestBody Teacher teacher) {
         System.out.println(id);
         System.out.println(teacher.toString());
-        String sql = String.format("update teacher set name = '%s', username = '%s', email = '%s', sex = %s where id = %s",
+        String sql = String.format("update teacher set name = '%s', username = '%s', email = '%s', gender = %s where id = %s",
                 teacher.getName(), teacher.getUsername(), teacher.getEmail(), teacher.getGender().compareTo(false), id);
         jdbcTemplate.update(sql);
     }
