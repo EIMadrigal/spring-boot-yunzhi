@@ -1,4 +1,4 @@
-package com.example.yunzhi;
+package com.example.yunzhi.controller;
 
 import com.example.yunzhi.model.Teacher;
 import org.slf4j.Logger;
